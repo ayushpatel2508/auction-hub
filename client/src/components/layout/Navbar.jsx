@@ -76,31 +76,12 @@ const Navbar = () => {
                                 background: 'var(--gradient-primary)',
                                 boxShadow: '0 3px 12px rgba(210, 105, 30, 0.4)'
                             }}>
-                                <span className="text-2xl">🏛️</span>
+                                <img className="text-2xl" src='logo.png' />
                             </div>
                             <span className="text-2xl font-bold text-gradient">AuctionHub</span>
                         </Link>
                     </div>
 
-                    {/* Search Bar */}
-                    <div className="hidden md:flex flex-1 max-w-md mx-8">
-                        <form onSubmit={handleSearchSubmit} className="relative w-full">
-                            <input
-                                type="text"
-                                placeholder="Search auctions..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="input w-full px-5 py-3 rounded-xl border-2 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 backdrop-blur-sm transition-all duration-300"
-                            />
-                            <button
-                                type="submit"
-                                className="absolute right-3 top-3 transition-colors text-lg"
-                                style={{ color: 'var(--accent-primary)' }}
-                            >
-                                🔍
-                            </button>
-                        </form>
-                    </div>
 
                     {/* Navigation Links */}
                     <div className="flex items-center space-x-6">
@@ -164,94 +145,6 @@ const Navbar = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* Mobile Menu */}
-                {isMobileMenuOpen && (
-                    <div className="md:hidden border-t-2" style={{ borderTopColor: 'var(--accent-primary)' }}>
-                        <div className="px-4 py-4 space-y-4" style={{ background: 'var(--bg-primary)' }}>
-
-                            {/* Mobile Search */}
-                            <form onSubmit={handleMobileSearchSubmit} className="relative">
-                                <input
-                                    type="text"
-                                    placeholder="Search auctions..."
-                                    value={mobileSearchTerm}
-                                    onChange={(e) => setMobileSearchTerm(e.target.value)}
-                                    className="input w-full px-5 py-3 rounded-xl border-2 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 backdrop-blur-sm transition-all duration-300"
-                                />
-                                <button
-                                    type="submit"
-                                    className="absolute right-3 top-3 transition-colors text-lg"
-                                    style={{ color: 'var(--accent-primary)' }}
-                                >
-                                    🔍
-                                </button>
-                            </form>
-
-                            {/* Mobile Navigation Links */}
-                            <div className="space-y-2">
-                                <Link
-                                    to="/"
-                                    onClick={closeMobileMenu}
-                                    className="block px-4 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-md"
-                                    style={{
-                                        color: 'var(--text-primary)',
-                                        background: 'var(--surface-primary)',
-                                        border: '1px solid var(--border-primary)'
-                                    }}
-                                >
-                                    🏠 Home
-                                </Link>
-                                <Link
-                                    to="/auctions"
-                                    onClick={closeMobileMenu}
-                                    className="block px-4 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-md"
-                                    style={{
-                                        color: 'var(--text-primary)',
-                                        background: 'var(--surface-primary)',
-                                        border: '1px solid var(--border-primary)'
-                                    }}
-                                >
-                                    🏛️ Auctions
-                                </Link>
-                            </div>
-
-                            {/* Mobile User Section */}
-                            {isLoggedIn ? (
-                                <div className="pt-4 border-t" style={{ borderTopColor: 'var(--border-secondary)' }}>
-                                    <div className="mb-3 px-4 py-2 rounded-lg" style={{ background: 'var(--surface-hover)' }}>
-                                        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Logged in as:</p>
-                                        <p className="font-medium" style={{ color: 'var(--accent-primary)' }}>👤 {user}</p>
-                                    </div>
-                                    <button
-                                        onClick={handleMobileLogout}
-                                        className="w-full px-4 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-md"
-                                        style={{
-                                            background: 'var(--accent-primary)',
-                                            color: 'var(--bg-primary)'
-                                        }}
-                                    >
-                                        🚪 Logout
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="pt-4 border-t" style={{ borderTopColor: 'var(--border-secondary)' }}>
-                                    <Link
-                                        to="/login"
-                                        onClick={closeMobileMenu}
-                                        className="block w-full px-4 py-3 rounded-lg font-medium text-center transition-all duration-300 hover:shadow-md"
-                                        style={{
-                                            background: 'var(--accent-primary)',
-                                            color: 'var(--bg-primary)'
-                                        }}
-                                    >
-                                        🔑 Login
-                                    </Link>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                )}
             </div>
 
             {/* Mobile Menu Overlay */}
@@ -261,6 +154,128 @@ const Navbar = () => {
                     onClick={closeMobileMenu}
                 ></div>
             )}
+
+            {/* Mobile Side Menu */}
+            <div className={`fixed top-0 left-0 h-full w-3/5 z-50 md:hidden transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+                }`} style={{ background: 'var(--bg-primary)' }}>
+
+                {/* Menu Header */}
+                <div className="flex items-center justify-between p-4 border-b-2" style={{ borderBottomColor: 'var(--accent-primary)' }}>
+                    <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{
+                            background: 'var(--gradient-primary)',
+                            boxShadow: '0 3px 12px rgba(210, 105, 30, 0.4)'
+                        }}>
+                            <span className="text-lg">🏛️</span>
+                        </div>
+                        <span className="text-lg font-bold text-gradient">Menu</span>
+                    </div>
+                    <button
+                        onClick={closeMobileMenu}
+                        className="p-2 rounded-lg transition-all duration-300"
+                        style={{ color: 'var(--text-primary)' }}
+                    >
+                        <span className="text-xl">✕</span>
+                    </button>
+                </div>
+
+                {/* Menu Content */}
+                <div className="p-4 space-y-4 h-full overflow-y-auto">
+
+                    {/* Search Bar */}
+                    <form onSubmit={handleMobileSearchSubmit} className="relative">
+                        <input
+                            type="text"
+                            placeholder="Search auctions..."
+                            value={mobileSearchTerm}
+                            onChange={(e) => setMobileSearchTerm(e.target.value)}
+                            className="input w-full px-4 py-3 rounded-xl border-2 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 backdrop-blur-sm transition-all duration-300 text-sm"
+                        />
+                        <button
+                            type="submit"
+                            className="absolute right-3 top-3 transition-colors"
+                            style={{ color: 'var(--accent-primary)' }}
+                        >
+                            🔍
+                        </button>
+                    </form>
+
+                    {/* Navigation Links */}
+                    <div className="space-y-3">
+                        <h3 className="text-sm font-semibold uppercase tracking-wide" style={{ color: 'var(--text-secondary)' }}>
+                            Navigation
+                        </h3>
+                        <Link
+                            to="/"
+                            onClick={closeMobileMenu}
+                            className="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-md"
+                            style={{
+                                color: 'var(--text-primary)',
+                                background: 'var(--surface-primary)',
+                                border: '1px solid var(--border-primary)'
+                            }}
+                        >
+                            <span className="text-lg">🏠</span>
+                            <span>Home</span>
+                        </Link>
+                        <Link
+                            to="/auctions"
+                            onClick={closeMobileMenu}
+                            className="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-md"
+                            style={{
+                                color: 'var(--text-primary)',
+                                background: 'var(--surface-primary)',
+                                border: '1px solid var(--border-primary)'
+                            }}
+                        >
+                            <span className="text-lg">🏛️</span>
+                            <span>Auctions</span>
+                        </Link>
+                    </div>
+
+                    {/* User Section */}
+                    <div className="pt-4 border-t" style={{ borderTopColor: 'var(--border-secondary)' }}>
+                        <h3 className="text-sm font-semibold uppercase tracking-wide mb-3" style={{ color: 'var(--text-secondary)' }}>
+                            Account
+                        </h3>
+                        {isLoggedIn ? (
+                            <div className="space-y-3">
+                                <div className="px-4 py-3 rounded-lg" style={{ background: 'var(--surface-hover)' }}>
+                                    <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Logged in as:</p>
+                                    <p className="font-medium flex items-center space-x-2" style={{ color: 'var(--accent-primary)' }}>
+                                        <span>👤</span>
+                                        <span>{user}</span>
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={handleMobileLogout}
+                                    className="flex items-center space-x-3 w-full px-4 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-md"
+                                    style={{
+                                        background: 'var(--accent-primary)',
+                                        color: 'var(--bg-primary)'
+                                    }}
+                                >
+                                    <span className="text-lg">🚪</span>
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        ) : (
+                            <Link
+                                to="/login"
+                                onClick={closeMobileMenu}
+                                className="flex items-center space-x-3 w-full px-4 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-md"
+                                style={{
+                                    background: 'var(--accent-primary)',
+                                    color: 'var(--bg-primary)'
+                                }}
+                            >
+                                <span className="text-lg">🔑</span>
+                                <span>Login</span>
+                            </Link>
+                        )}
+                    </div>
+                </div>
+            </div>
         </nav>
     );
 };
