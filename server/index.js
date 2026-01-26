@@ -199,25 +199,27 @@ io.on("connection", (socket) => {
         status: "online",
       });
 
-      // Update auction online users (remove duplicates)
-      if (!auction.onlineUsers.includes(username)) {
-        auction.onlineUsers.push(username);
-      }
-
-      // Update auction joined users (persistent)
-      if (!auction.joinedUsers.includes(username)) {
-        auction.joinedUsers.push(username);
-      }
-
-      await auction.save();
-
+      // Atomic update to avoid race conditions
+      // Update both onlineUsers (temp) and joinedUsers (persistent)
+      const updatedAuction = await Auction.findOneAndUpdate(
+        { roomId },
+        {
+          $addToSet: {
+            onlineUsers: username,
+            joinedUsers: username
+          }
+        },
+        { new: true } // Return the updated document
+      );
+      
+      // Use the updated document for notifications
       // Emit to the user who joined
       socket.emit("auction-joined", `${username} joined successfully`);
 
       // Emit to ALL users in the room (including the joiner) - for updating the online users list
       io.to(roomId).emit("online-users-updated", {
-        onlineUsers: auction.onlineUsers,
-        onlineUsersCount: auction.onlineUsers.length,
+        onlineUsers: updatedAuction.onlineUsers,
+        onlineUsersCount: updatedAuction.onlineUsers.length,
       });
 
       // Emit ONLY to OTHER users in the room (excluding the joiner) - for the join notification

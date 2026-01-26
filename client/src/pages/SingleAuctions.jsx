@@ -28,7 +28,6 @@ const SingleAuctions = () => {
                 <div className="card p-8 text-center max-w-md mx-auto">
                     <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6" style={{
                         background: 'var(--gradient-primary)',
-                        boxShadow: '0 3px 12px rgba(210, 105, 30, 0.4)'
                     }}>
                         <span className="text-3xl">🔐</span>
                     </div>
@@ -477,11 +476,11 @@ You will be redirected to the auctions page...`.trim();
                             {/* Timer - Only show if auction is active */}
                             {!auctionEnded && (
                                 <div className="flex items-center gap-3">
-                                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${timeLeft <= 60 ? 'status-error' :
+                                    {/* <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${timeLeft <= 60 ? 'status-error' :
                                         timeLeft <= 300 ? 'status-warning' : 'status-active'
                                         }`}>
                                         <span>⏰</span>
-                                    </div>
+                                    </div> */}
                                     <div>
                                         <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Time Left</p>
                                         <p className={`font-semibold font-mono ${timeLeft <= 60 ? 'text-red-600 animate-pulse' :
@@ -530,8 +529,9 @@ You will be redirected to the auctions page...`.trim();
 
                                     {/* Auction Stats Grid */}
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                                        <div className="card-elevated p-6 border border-green-500/20" style={{
-                                            background: 'linear-gradient(135deg, rgba(34, 139, 34, 0.1) 0%, rgba(34, 139, 34, 0.05) 100%)'
+                                        <div className="card p-6 border" style={{
+                                            background: 'rgba(255, 255, 255, 0.8)',
+                                            borderColor: 'var(--border-secondary)'
                                         }}>
                                             <div className="flex items-center gap-3 mb-2">
                                                 <div className="w-10 h-10 rounded-lg flex items-center justify-center status-active">
@@ -547,7 +547,7 @@ You will be redirected to the auctions page...`.trim();
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="card-elevated p-6 border" style={{
+                                        <div className="card p-6 border" style={{
                                             background: 'linear-gradient(135deg, rgba(210, 105, 30, 0.1) 0%, rgba(210, 105, 30, 0.05) 100%)',
                                             borderColor: 'var(--accent-primary)'
                                         }}>
@@ -566,7 +566,7 @@ You will be redirected to the auctions page...`.trim();
                                         </div>
 
                                         {auctionData.auction?.status === 'ended' && (
-                                            <div className="card-elevated p-6 border border-purple-500/20" style={{
+                                            <div className="card p-6 border border-purple-500/20" style={{
                                                 background: 'linear-gradient(135deg, rgba(128, 0, 128, 0.1) 0%, rgba(128, 0, 128, 0.05) 100%)'
                                             }}>
                                                 <div className="flex items-center gap-3 mb-2">
@@ -587,163 +587,154 @@ You will be redirected to the auctions page...`.trim();
                                         )}
                                     </div>
 
-                                    {/* Bid History Section - Only show for active auctions */}
-                                    {auctionData.auction?.status === 'active' && (
-                                        <div className="space-y-4">
-                                            <div className="flex items-center justify-between">
-                                                <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                                                    <span>📊</span>
-                                                    Recent Bids
-                                                </h3>
-                                                <div className="text-sm text-gray-400">
-                                                    {bidHistory?.length || 0} total bids
-                                                </div>
-                                            </div>
+                                    {/* Place Bid Section - Moved here */}
+                                    {auctionData.auction?.status === 'active' && !auctionEnded && (
+                                        <div className="card p-8">
+                                            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: 'var(--text-primary)' }}>
+                                                <span className="text-3xl">🎯</span>
+                                                Place Your Bid
+                                            </h3>
 
-                                            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/30 border border-gray-700/50 rounded-xl p-6">
-                                                {bidHistory?.length > 0 ? (
-                                                    <div className="space-y-3 max-h-80 overflow-y-auto">
-                                                        {bidHistory.map((bid, index) => (
-                                                            <div key={index} className="flex items-center justify-between p-4 rounded-lg border transition-colors card-elevated hover:shadow-md">
-                                                                <div className="flex items-center gap-3">
-                                                                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{
-                                                                        background: 'var(--gradient-primary)'
-                                                                    }}>
-                                                                        {bid.username.charAt(0).toUpperCase()}
-                                                                    </div>
-                                                                    <div>
-                                                                        <p className="font-medium text-white">{bid.username}</p>
-                                                                        <p className="text-xs text-gray-400">
-                                                                            {new Date(bid.placedAt).toLocaleDateString()} at {new Date(bid.placedAt).toLocaleTimeString()}
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="text-right">
-                                                                    <p className="text-xl font-bold text-green-400">${bid.amount}</p>
-                                                                    {index === 0 && (
-                                                                        <span className="text-xs text-green-400 font-medium">Highest Bid</span>
-                                                                    )}
+                                            <div className="space-y-6">
+                                                {/* Current Highest Bidder Alert */}
+                                                {auctionData.auction?.highestBidder === user && (
+                                                    <div className="rounded-lg p-4 status-active">
+                                                        <p className="text-green-600 text-sm flex items-center gap-2">
+                                                            <span>🏆</span>
+                                                            You are currently the highest bidder! Wait for others to bid before placing another bid.
+                                                        </p>
+                                                    </div>
+                                                )}
+
+                                                <div className="flex gap-4">
+                                                    <div className="flex-1">
+                                                        <input
+                                                            type="number"
+                                                            value={bid || ''}
+                                                            onChange={(e) => setBid(e.target.value)}
+                                                            placeholder="Enter bid amount"
+                                                            className="input text-lg"
+                                                            disabled={auctionEnded || !hasJoined}
+                                                            min={auctionData.auction?.currentBid ? auctionData.auction.currentBid + 1 : auctionData.auction?.startingPrice}
+                                                        />
+                                                        <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
+                                                            Minimum bid: ${(auctionData.auction?.currentBid || auctionData.auction?.startingPrice || 0) + 1}
+                                                        </p>
+                                                    </div>
+                                                    <button
+                                                        onClick={placeBid}
+                                                        disabled={!bid || !hasJoined || auctionEnded || auctionData.auction?.highestBidder === user}
+                                                        className="btn btn-primary px-8 py-4 text-lg"
+                                                    >
+                                                        <span>🚀</span>
+                                                        {auctionData.auction?.highestBidder === user ? 'You\'re Winning!' : 'Place Bid'}
+                                                    </button>
+                                                </div>
+
+                                                {auctionEnded && (
+                                                    <div className="rounded-lg p-4 status-error">
+                                                        <p className="text-red-600 text-sm flex items-center gap-2">
+                                                            <span>🔒</span>
+                                                            Auction has ended - bidding is closed
+                                                        </p>
+                                                    </div>
+                                                )}
+                                                {/* Quit Auction Button - Only for non-creators */}
+                                                {hasJoined && !auctionEnded && auctionData.auction?.createdBy !== user && (
+                                                    <div className="pt-6" style={{ borderTop: '1px solid var(--border-secondary)' }}>
+                                                        <button
+                                                            onClick={handleQuitAuction}
+                                                            className="btn btn-ghost text-red-400 hover:bg-red-500/10 hover:border-red-500/30"
+                                                        >
+                                                            <span>🚪</span>
+                                                            Leave Auction
+                                                        </button>
+                                                        <p className="text-xs text-gray-500 mt-2">
+                                                            You can rejoin this auction later if it's still active
+                                                        </p>
+                                                    </div>
+                                                )}
+
+                                                {/* Creator Info */}
+                                                {hasJoined && !auctionEnded && auctionData.auction?.createdBy === user && (
+                                                    <div className="pt-6" style={{ borderTop: '1px solid var(--border-secondary)' }}>
+                                                        <div className="card rounded-lg p-4 mb-4" style={{
+                                                            background: 'linear-gradient(135deg, rgba(210, 105, 30, 0.1) 0%, rgba(139, 125, 107, 0.05) 100%)',
+                                                            borderColor: 'var(--accent-primary)'
+                                                        }}>
+                                                            <div className="flex items-center gap-3">
+                                                                <span className="text-2xl">👑</span>
+                                                                <div>
+                                                                    <p className="font-medium" style={{ color: 'var(--accent-primary)' }}>You are the auction creator</p>
+                                                                    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>As the creator, you can leave the auction and let it continue without you.</p>
                                                                 </div>
                                                             </div>
-                                                        ))}
-                                                    </div>
-                                                ) : (
-                                                    <div className="text-center py-12">
-                                                        <div className="w-16 h-16 bg-gray-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                                            <span className="text-3xl text-gray-500">📝</span>
                                                         </div>
-                                                        <p className="text-gray-400 text-lg">No bids yet</p>
-                                                        <p className="text-gray-500 text-sm mt-1">Be the first to place a bid!</p>
+                                                        <button
+                                                            onClick={handleQuitAuction}
+                                                            className="btn btn-ghost text-red-400 hover:bg-red-500/10 hover:border-red-500/30"
+                                                        >
+                                                            <span>🚪</span>
+                                                            Leave Auction
+                                                        </button>
+                                                        <p className="text-xs text-gray-500 mt-2">
+                                                            The auction will continue running even after you leave
+                                                        </p>
                                                     </div>
                                                 )}
                                             </div>
                                         </div>
                                     )}
                                 </div>
-                                {/* Bidding Section - Only for active auctions */}
-                                {auctionData.auction?.status === 'active' && !auctionEnded && (
-                                    <div className="card p-8">
-                                        <h3 className="text-2xl font-bold mb-6 flex items-center gap-3" style={{ color: 'var(--text-primary)' }}>
-                                            <span className="text-3xl">🎯</span>
-                                            Place Your Bid
-                                        </h3>
 
-                                        <div className="space-y-6">
-                                            {/* Current Highest Bidder Alert */}
-                                            {auctionData.auction?.highestBidder === user && (
-                                                <div className="rounded-lg p-4 status-active">
-                                                    <p className="text-green-600 text-sm flex items-center gap-2">
-                                                        <span>🏆</span>
-                                                        You are currently the highest bidder! Wait for others to bid before placing another bid.
-                                                    </p>
-                                                </div>
-                                            )}
 
-                                            <div className="flex gap-4">
-                                                <div className="flex-1">
-                                                    <input
-                                                        type="number"
-                                                        value={bid || ''}
-                                                        onChange={(e) => setBid(e.target.value)}
-                                                        placeholder="Enter bid amount"
-                                                        className="input text-lg"
-                                                        disabled={auctionEnded || !hasJoined || auctionData.auction?.highestBidder === user}
-                                                        min={auctionData.auction?.currentBid ? auctionData.auction.currentBid + 1 : auctionData.auction?.startingPrice}
-                                                    />
-                                                    <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
-                                                        Minimum bid: ${(auctionData.auction?.currentBid || auctionData.auction?.startingPrice || 0) + 1}
-                                                    </p>
+                                {/* User List Section - Moved here (Bottom of Main Col) */}
+                                {auctionData.auction?.status === 'active' && (
+                                    <div className="space-y-6">
+
+                                        {/* Online Users Card */}
+                                        <div className="card p-6">
+                                            <div className="flex items-center justify-between mb-6">
+                                                <h3 className="text-xl font-semibold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+                                                    <span>👥</span>
+                                                    Online Users
+                                                </h3>
+                                                <div className="px-3 py-1 rounded-full text-sm font-semibold border status-active">
+                                                    {onlineUsers.length} active
                                                 </div>
-                                                <button
-                                                    onClick={placeBid}
-                                                    disabled={!bid || !hasJoined || auctionEnded || auctionData.auction?.highestBidder === user}
-                                                    className="btn btn-primary px-8 py-4 text-lg"
-                                                >
-                                                    <span>🚀</span>
-                                                    {auctionData.auction?.highestBidder === user ? 'You\'re Winning!' : 'Place Bid'}
-                                                </button>
                                             </div>
 
-                                            {/* {!hasJoined && !auctionEnded && (
-                                                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
-                                                    <p className="text-yellow-400 text-sm flex items-center gap-2">
-                                                        <span>⏳</span>
-                                                        Connecting to auction room... Please wait.
-                                                    </p>
-                                                </div>
-                                            )} */}
-
-                                            {auctionEnded && (
-                                                <div className="rounded-lg p-4 status-error">
-                                                    <p className="text-red-600 text-sm flex items-center gap-2">
-                                                        <span>🔒</span>
-                                                        Auction has ended - bidding is closed
-                                                    </p>
-                                                </div>
-                                            )}
-                                            {/* Quit Auction Button - Only for non-creators */}
-                                            {hasJoined && !auctionEnded && auctionData.auction?.createdBy !== user && (
-                                                <div className="pt-6" style={{ borderTop: '1px solid var(--border-secondary)' }}>
-                                                    <button
-                                                        onClick={handleQuitAuction}
-                                                        className="btn btn-ghost text-red-400 hover:bg-red-500/10 hover:border-red-500/30"
-                                                    >
-                                                        <span>🚪</span>
-                                                        Leave Auction
-                                                    </button>
-                                                    <p className="text-xs text-gray-500 mt-2">
-                                                        You can rejoin this auction later if it's still active
-                                                    </p>
-                                                </div>
-                                            )}
-
-                                            {/* Creator Info */}
-                                            {hasJoined && !auctionEnded && auctionData.auction?.createdBy === user && (
-                                                <div className="pt-6" style={{ borderTop: '1px solid var(--border-secondary)' }}>
-                                                    <div className="card-elevated rounded-lg p-4 mb-4" style={{
-                                                        background: 'linear-gradient(135deg, rgba(210, 105, 30, 0.1) 0%, rgba(139, 125, 107, 0.05) 100%)',
-                                                        borderColor: 'var(--accent-primary)'
-                                                    }}>
-                                                        <div className="flex items-center gap-3">
-                                                            <span className="text-2xl">👑</span>
+                                            <div className="space-y-3 max-h-80 overflow-y-auto">
+                                                {onlineUsers.length > 0 ? (
+                                                    onlineUsers.map((username, index) => (
+                                                        <div
+                                                            key={index}
+                                                            className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${username === user
+                                                                ? 'card border' : 'card border hover:bg-gray-50'
+                                                                }`} style={username === user ? {
+                                                                    background: 'linear-gradient(135deg, rgba(210, 105, 30, 0.2) 0%, rgba(139, 125, 107, 0.1) 100%)',
+                                                                    borderColor: 'var(--accent-primary)'
+                                                                } : {
+                                                                    background: 'var(--bg-secondary)',
+                                                                    borderColor: 'var(--border-secondary)'
+                                                                }}>
+                                                            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{
+                                                                background: username === user ? 'var(--gradient-primary)' : 'var(--surface-hover)',
+                                                                color: username === user ? 'white' : 'var(--text-secondary)'
+                                                            }}>
+                                                                {username.charAt(0).toUpperCase()}
+                                                            </div>
                                                             <div>
-                                                                <p className="font-medium" style={{ color: 'var(--accent-primary)' }}>You are the auction creator</p>
-                                                                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>As the creator, you can leave the auction and let it continue without you.</p>
+                                                                <p className={`font-medium ${username === user ? 'text-orange-600' : ''}`} style={username !== user ? { color: 'var(--text-primary)' } : {}}>
+                                                                    {username} {username === user && '(You)'}
+                                                                </p>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <button
-                                                        onClick={handleQuitAuction}
-                                                        className="btn btn-ghost text-red-400 hover:bg-red-500/10 hover:border-red-500/30"
-                                                    >
-                                                        <span>🚪</span>
-                                                        Leave Auction
-                                                    </button>
-                                                    <p className="text-xs text-gray-500 mt-2">
-                                                        The auction will continue running even after you leave
-                                                    </p>
-                                                </div>
-                                            )}
+                                                    ))
+                                                ) : (
+                                                    <p className="text-center py-4" style={{ color: 'var(--text-secondary)' }}>Waiting for users...</p>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 )}
@@ -777,72 +768,52 @@ You will be redirected to the auctions page...`.trim();
                             {auctionData.auction?.status === 'active' && (
                                 <div className="space-y-6">
 
-                                    {/* Online Users Card */}
-                                    <div className="card p-6">
-                                        <div className="flex items-center justify-between mb-6">
-                                            <h3 className="text-xl font-semibold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-                                                <span>👥</span>
-                                                Online Users
-                                            </h3>
-                                            <div className="px-3 py-1 rounded-full text-sm font-semibold border status-active">
-                                                {onlineUsers.length} active
+                                    {/* Bid History Section - Right Column */}
+                                    {auctionData.auction?.status === 'active' && (
+                                        <div className="card p-6 border border-gray-200">
+                                            <div className="flex items-center justify-between mb-6">
+                                                <h3 className="text-xl font-semibold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+                                                    <span>📊</span>
+                                                    Recent Bids
+                                                </h3>
+                                                <div className="text-sm text-gray-500">
+                                                    {bidHistory?.length || 0} total bids
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-3 max-h-screen overflow-y-auto">
+                                                {bidHistory?.length > 0 ? (
+                                                    bidHistory.map((bid, index) => (
+                                                        <div key={index} className="flex items-center justify-between p-4 rounded-lg border transition-colors hover:bg-gray-50" style={{ background: 'white', borderColor: 'var(--border-secondary)' }}>
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{
+                                                                    background: 'var(--gradient-primary)'
+                                                                }}>
+                                                                    {bid.username.charAt(0).toUpperCase()}
+                                                                </div>
+                                                                <div>
+                                                                    <p className="font-medium text-black">{bid.username}</p>
+                                                                    <p className="text-xs text-gray-400">
+                                                                        {new Date(bid.placedAt).toLocaleDateString()} at {new Date(bid.placedAt).toLocaleTimeString()}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="text-right">
+                                                                <p className="text-xl font-bold text-green-600">${bid.amount}</p>
+                                                                {index === 0 && (
+                                                                    <span className="text-xs text-green-600 font-medium">Highest Bid</span>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className="text-center py-12">
+                                                        <p className="text-gray-400 text-lg">No bids yet</p>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
-
-                                        <div className="space-y-3 max-h-80 overflow-y-auto">
-                                            {onlineUsers.length > 0 ? (
-                                                onlineUsers.map((username, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${username === user
-                                                            ? 'card-elevated border' : 'card-elevated border hover:shadow-md'
-                                                            }`} style={username === user ? {
-                                                                background: 'linear-gradient(135deg, rgba(210, 105, 30, 0.2) 0%, rgba(139, 125, 107, 0.1) 100%)',
-                                                                borderColor: 'var(--accent-primary)'
-                                                            } : {}}
-                                                    >
-                                                        <div className="relative">
-                                                            <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold" style={{
-                                                                background: 'var(--gradient-primary)'
-                                                            }}>
-                                                                {username.charAt(0).toUpperCase()}
-                                                            </div>
-                                                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-900 animate-pulse"></div>
-                                                        </div>
-                                                        <div className="flex-1">
-                                                            <p className={`font-medium ${username === user ? 'text-indigo-400' : 'text-white'}`}>
-                                                                {username === user ? `${username} (You)` : username}
-                                                            </p>
-                                                            {auctionData.auction?.createdBy === username && (
-                                                                <span className="inline-block bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded-full border border-yellow-500/30 mt-1">
-                                                                    👑 Creator
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            ) : (
-                                                <div className="text-center py-8">
-                                                    <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style={{
-                                                        background: 'var(--surface-hover)',
-                                                        color: 'var(--text-tertiary)'
-                                                    }}>
-                                                        <span className="text-2xl">👤</span>
-                                                    </div>
-                                                    <p style={{ color: 'var(--text-secondary)' }}>No users online</p>
-                                                    <p className="text-sm mt-1" style={{ color: 'var(--text-tertiary)' }}>Be the first to join!</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                        {/* Live Status Indicator */}
-                                        <div className="mt-4 pt-4 flex items-center justify-between text-xs" style={{ borderTop: '1px solid var(--border-secondary)' }}>
-                                            <span className="flex items-center gap-2 text-green-400">
-                                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                                Live updates enabled
-                                            </span>
-                                            <span className="text-gray-500">{new Date().toLocaleTimeString()}</span>
-                                        </div>
-                                    </div>
+                                    )}
 
                                     {/* Connection Status Card */}
                                     <div className="card p-6">
