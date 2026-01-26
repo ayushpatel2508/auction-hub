@@ -146,7 +146,7 @@ const Navbar = () => {
                         </div>
 
                         {/* Sidebar Content */}
-                        <div className="p-6 space-y-6 " style={{background:'var(--surface-primary'}}>
+                        <div className="p-6 space-y-6" style={{ background: 'var(--bg-primary)' }}>
                             {/* Navigation Links */}
                             <div className="space-y-4">
                                 <Link
@@ -155,7 +155,7 @@ const Navbar = () => {
                                     className="block w-full px-4 py-4 rounded-lg font-medium transition-all duration-300 hover:shadow-md text-center"
                                     style={{
                                         color: 'var(--text-primary)',
-                                        background: 'var(--surface-primary)',
+                                        background: 'var(--bg-secondary)',
                                         border: '1px solid var(--border-primary)'
                                     }}
                                 >
@@ -167,7 +167,7 @@ const Navbar = () => {
                                     className="block w-full px-4 py-4 rounded-lg font-medium transition-all duration-300 hover:shadow-md text-center"
                                     style={{
                                         color: 'var(--text-primary)',
-                                        background: 'var(--surface-primary)',
+                                        background: 'var(--bg-secondary)',
                                         border: '1px solid var(--border-primary)'
                                     }}
                                 >
