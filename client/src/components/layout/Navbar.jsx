@@ -55,7 +55,7 @@ const Navbar = () => {
                                 background: 'var(--gradient-primary)',
                                 boxShadow: '0 3px 12px rgba(210, 105, 30, 0.4)'
                             }}>
-                                <img src="/logo.png" alt="AuctionHub Logo" className="w-8 h-8 object-contain" />
+                                {/* <img src="/logo.png" alt="AuctionHub Logo" className="w-8 h-8 object-contain" /> */}
                             </div>
                             <span className="text-2xl font-bold text-gradient">AuctionHub</span>
                         </Link>
