@@ -39,7 +39,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="shadow-lg backdrop-blur-sm border-b-2" style={{
+        <nav className="shadow-lg backdrop-blur-sm border-b-2 relative z-50" style={{
             background: 'var(--bg-primary)',
             borderBottomColor: 'var(--accent-primary)',
             boxShadow: '0 2px 12px rgba(210, 105, 30, 0.15)',
