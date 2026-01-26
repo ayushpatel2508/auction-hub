@@ -146,7 +146,7 @@ const Navbar = () => {
                         </div>
 
                         {/* Sidebar Content */}
-                        <div className="p-6 space-y-6">
+                        <div className="p-6 space-y-6 " style={{background:'var(--surface-primary'}}>
                             {/* Navigation Links */}
                             <div className="space-y-4">
                                 <Link
