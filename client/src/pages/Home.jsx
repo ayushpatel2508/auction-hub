@@ -130,17 +130,19 @@ const Home = () => {
 
             <div className="space-y-4 mb-6">
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-gradient-to-br  border border-black rounded-lg p-3">
-                        <p className="text-xs text-gray-400 mb-1">
-                            {auction.status === 'active' ? 'Current Bid' : 'Final Bid'}
-                        </p>
-                        <p className="text-lg font-bold text-green-400">${auction.currentBid}</p>
-                    </div>
-                    <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-lg p-3">
-                        <p className="text-xs text-gray-600 mb-1">Status</p>
-                        <p className="text-sm font-medium text-gray-600">
-                            {auction.status === 'active' ? formatTimeLeft(auction.endTime) : 'Ended'}
-                        </p>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="rounded-lg p-3 border" style={{ background: 'rgba(255, 255, 255, 0.8)', borderColor: 'var(--border-secondary)' }}>
+                            <p className="text-xs text-gray-500 mb-1">
+                                {auction.status === 'active' ? 'Current Bid' : 'Final Bid'}
+                            </p>
+                            <p className="text-lg font-bold" style={{ color: 'var(--success)' }}>${auction.currentBid}</p>
+                        </div>
+                        <div className="rounded-lg p-3 border" style={{ background: 'rgba(255, 255, 255, 0.8)', borderColor: 'var(--border-secondary)' }}>
+                            <p className="text-xs text-gray-500 mb-1">Status</p>
+                            <p className={`text-sm font-medium ${auction.status === 'active' ? 'text-green-600' : 'text-red-500'}`}>
+                                {auction.status === 'active' ? formatTimeLeft(auction.endTime) : 'Ended'}
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -163,15 +165,15 @@ const Home = () => {
                                 onClick={() => handleDelete(auction.roomId)}
                                 className="btn btn-error w-full text-sm"
                             >
-                                
+
                                 Delete Auction
                             </button>
                         ) : (
                             <div className="rounded-lg p-3 text-center" style={{
-                                background: 'linear-gradient(135deg, rgba(128, 0, 128, 0.1) 0%, rgba(128, 0, 128, 0.05) 100%)',
-                                border: '1px solid rgb(0, 0, 0)'
+                                background: 'var(--accent-secondary)',
+                                border: '1px solid var(--border-primary)'
                             }}>
-                                <span className="font-medium text-sm text-black">
+                                <span className="font-medium text-sm text-white">
                                     {auction.winner ? `🏆 Won by: ${auction.winner}` : '❌ No winner'}
                                 </span>
                             </div>
@@ -188,11 +190,10 @@ const Home = () => {
                             </button>
                         ) : (
                             <div className="rounded-lg p-3 text-center" style={{
-                                background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 100%)',
-                                border: '1px solid rgb(0, 0, 0)'
+                                background: 'var(--accent-secondary)',
+                                border: '1px solid var(--border-primary)'
                             }}>
-                                <span className={`font-medium text-sm ${auction.winner === user ? 'text-black' : 'text-black'
-                                    }`}>
+                                <span className="font-medium text-sm text-white">
                                     {auction.winner === user ? '🏆 You Won!' :
                                         auction.winner ? `🏆 Won by: ${auction.winner}` :
                                             '❌ Ended - No Winner'}
@@ -205,7 +206,8 @@ const Home = () => {
 
             <button
                 onClick={() => navigate(`/auction/${auction.roomId}`)}
-                className={`btn w-full ${auction.status === 'active' ? 'btn-primary' : 'btn-secondary'}`}
+                className={`btn w-full ${auction.status === 'active' ? 'btn-primary' : ''}`}
+                style={auction.status !== 'active' ? { background: 'var(--accent-secondary)', color: 'white' } : {}}
             >
                 <span>{auction.status === 'active' ? '🎯' : '📊'}</span>
                 {auction.status === 'active' ? 'View Auction' : 'View Results'}
@@ -345,7 +347,7 @@ const Home = () => {
                                 onClick={() => navigate('/auctions')}
                                 className="btn btn-primary px-6 py-3 rounded-xl transition-all duration-300 font-medium transform hover:scale-105 flex items-center gap-2 mx-auto"
                             >
-                                <span>🔍</span>
+                                {/* <span>🔍</span> */}
                                 Browse Auctions
                             </button>
                         </div>
@@ -362,7 +364,8 @@ const Home = () => {
                             <p className="text-gray-400">Auctions you've created</p>
                         </div>
                         <CreateAuction onAuctionCreated={fetchUserAuctions}>
-                            <button className="btn btn-success">
+                            <button className="btn btn-primary">
+                                <span>✨</span>
                                 Create New Auction
                             </button>
                         </CreateAuction>
@@ -390,12 +393,7 @@ const Home = () => {
                         </>
                     ) : (
                         <div className="card p-12 text-center rounded-xl border-2 backdrop-blur-sm">
-                            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 border" style={{
-                                background: 'var(--surface-hover)',
-                                borderColor: 'var(--border-secondary)'
-                            }}>
-                                <span className="text-3xl">🏛️</span>
-                            </div>
+
                             <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>No Created Auctions</h3>
                             <p className="mb-8" style={{ color: 'var(--text-secondary)' }}>You haven't created any auctions yet. Start your first auction today!</p>
                             <CreateAuction onAuctionCreated={fetchUserAuctions}>
